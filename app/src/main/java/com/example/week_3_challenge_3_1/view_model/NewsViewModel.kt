@@ -20,6 +20,12 @@ class NewsViewModel(private val repository: NewsDataRepository):ViewModel() {
         return newsData
     }
 
+    fun fetchNewsByTitle(title: String) {
+        viewModelScope.launch {
+            repository.fetchNewsByTitle(title)
+        }
+    }
+
     fun apiCall() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.fetchNewsDataFromAPI()

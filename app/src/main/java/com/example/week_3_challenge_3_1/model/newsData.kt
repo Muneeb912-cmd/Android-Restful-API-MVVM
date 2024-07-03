@@ -1,5 +1,6 @@
 package com.example.week_3_challenge_3_1.model
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 
 data class NewsData(
@@ -9,7 +10,7 @@ data class NewsData(
     var status: String,
     @SerializedName("totalResults")
     var totalResults: Int
-)
+):Serializable
 
 data class Article(
     @SerializedName("author")

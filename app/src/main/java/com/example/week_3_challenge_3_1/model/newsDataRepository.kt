@@ -7,29 +7,41 @@ import com.example.week_3_challenge_3_1.network.RetroInstance
 import com.example.week_3_challenge_3_1.network.RetroService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class NewsDataRepository {
 
     private val newsDataFromAPI = MutableLiveData<NewsData>()
+    private val newsDataByTitle = MutableLiveData<NewsData>()
 
     fun getNews(): LiveData<NewsData> {
         return newsDataFromAPI
     }
 
+    fun getNewsByTitleLiveData(): LiveData<NewsData> {
+        return newsDataByTitle
+    }
+
     suspend fun fetchNewsDataFromAPI(): LiveData<NewsData> {
         return withContext(Dispatchers.IO) {
             try {
-
-                val response = RetroInstance.retrofitInstance.getDataFromAPI()
+                val response = RetroInstance.getRetrofitInstance().create(RetroService::class.java).getDataFromAPI()
                 newsDataFromAPI.postValue(response)
             } catch (e: Exception) {
                 Log.d("API Call", "apiCall: ${e.message}")
             }
             getNews()
         }
+    }
 
+    suspend fun fetchNewsByTitle(title: String): LiveData<NewsData> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = RetroInstance.getRetrofitInstance().create(RetroService::class.java).getNewsByTitle(title)
+                newsDataByTitle.postValue(response)
+            } catch (e: Exception) {
+                Log.d("API Call", "apiCall: ${e.message}")
+            }
+            getNewsByTitleLiveData()
+        }
     }
 }

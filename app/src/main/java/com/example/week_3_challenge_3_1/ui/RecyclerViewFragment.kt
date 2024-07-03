@@ -15,7 +15,7 @@ import com.example.week_3_challenge_3_1.model.NewsData
 import com.example.week_3_challenge_3_1.model.NewsDataRepository
 import com.example.week_3_challenge_3_1.view_model.NewsViewModel
 
-class RecyclerViewFragment : Fragment() {
+class RecyclerViewFragment : Fragment(),RecyclerViewAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecyclerViewAdapter
     private var dataList = ArrayList<NewsData>()
@@ -41,8 +41,29 @@ class RecyclerViewFragment : Fragment() {
 
     private fun setUpRecyclerView(articles: List<Article>) {
         recyclerView.layoutManager = LinearLayoutManager(this.context)
-        adapter = RecyclerViewAdapter(articles)
+        adapter = RecyclerViewAdapter(articles,this)
         recyclerView.adapter = adapter
+    }
+
+    override fun onButtonClick(title: String) {
+        newsViewModel.fetchNewsByTitle(title)
+
+        newsViewModel.getNewsListObserver().observe(viewLifecycleOwner, Observer { data ->
+            data?.let {
+                val newFragment = NewsDetails()
+
+                // Pass data to the new fragment (if needed)
+                val bundle = Bundle()
+                bundle.putSerializable("newsData", data)
+                newFragment.arguments = bundle
+
+                // Navigate to the new fragment
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.frameLayout, newFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        })
     }
 
 }

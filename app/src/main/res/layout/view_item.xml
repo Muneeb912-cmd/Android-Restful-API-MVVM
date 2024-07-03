@@ -32,11 +32,11 @@
 
             <ImageButton
                 android:id="@+id/more"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:background="@drawable/ic_read_more"
+                android:background="@drawable/baseline_read_more_24"
                  />
 
             <!-- Add more buttons/options as needed -->
@@ -53,7 +53,7 @@
         app:layout_constraintTop_toBottomOf="@id/frameLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:background="@drawable/layout_border"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp">

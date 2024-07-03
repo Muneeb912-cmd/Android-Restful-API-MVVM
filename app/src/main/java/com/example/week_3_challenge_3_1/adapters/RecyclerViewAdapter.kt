@@ -3,6 +3,9 @@ package com.example.week_3_challenge_3_1.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -12,8 +15,34 @@ import com.example.week_3_challenge_3_1.model.Article
 
 
 class RecyclerViewAdapter(
-    private val dataList: List<Article>
+    private val dataList: List<Article>,
+    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onButtonClick(title: String)
+    }
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),View.OnClickListener {
+        val newsTitle = itemView.findViewById<TextView>(R.id.newsTitle)
+        val author = itemView.findViewById<TextView>(R.id.author)
+        val publishedAt = itemView.findViewById<TextView>(R.id.publishedTime)
+        val id = itemView.findViewById<TextView>(R.id.newsId)
+        val imgViewer = itemView.findViewById<ImageView>(R.id.cardImage1)
+        val moreButton=itemView.findViewById<ImageButton>(R.id.more)
+        init {
+            moreButton.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                if (v == moreButton) {
+                    listener.onButtonClick(dataList[position].title)
+                }
+            }
+        }
+    }
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -37,13 +66,6 @@ class RecyclerViewAdapter(
         return dataList.size
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val newsTitle = itemView.findViewById<TextView>(R.id.newsTitle)
-        val author = itemView.findViewById<TextView>(R.id.author)
-        val publishedAt = itemView.findViewById<TextView>(R.id.publishedTime)
-        val id = itemView.findViewById<TextView>(R.id.newsId)
-        val imgViewer = itemView.findViewById<ImageView>(R.id.cardImage1)
 
-    }
 }
 

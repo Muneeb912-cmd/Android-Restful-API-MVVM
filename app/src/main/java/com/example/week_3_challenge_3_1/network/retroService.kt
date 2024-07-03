@@ -11,7 +11,15 @@ interface RetroService {
     @GET("everything")
     suspend fun getDataFromAPI(
         @Query("q") query: String="tesla",
-        @Query("from") from: String = "2024-06-01",
+        @Query("from") from: String = "2024-06-03",
+        @Query("sortBy") sortBy: String = "publishedAt",
+        @Query("apiKey") apiKey: String = "90aba61021f44215937abcae831d2128"
+    ): NewsData
+
+    @GET("everything")
+    suspend fun getNewsByTitle(
+        @Query("q") query: String,
+        @Query("from") from: String = "2024-06-03",
         @Query("sortBy") sortBy: String = "publishedAt",
         @Query("apiKey") apiKey: String = "90aba61021f44215937abcae831d2128"
     ): NewsData
